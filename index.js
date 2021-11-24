@@ -85,7 +85,7 @@ function isLeapYear(year) {
   return false;
 }
 
-function calendar(year, month) {
+function calendar(year, month, today) {
   var day = dayOfTheWeek(year, month, 1);
   var date = 1;
   var daysOfTheMonth = daysOftheMonth(year, month + 1);
@@ -93,16 +93,16 @@ function calendar(year, month) {
 
   while (date <= daysOfTheMonth) {
     if (date === 1) {
-      date = appendRow(date, day);
+      date = appendRow(date, day, 7, today);
     } else if (daysOfTheMonth - date < 7) {
-      date = appendRow(date, 0, daysOfTheMonth - date + 1);
+      date = appendRow(date, 0, daysOfTheMonth - date + 1, today);
     } else {
-      date = appendRow(date);
+      date = appendRow(date, 0, 7, today);
     }
   }
 }
 
-function appendRow(date, day = 0, end = 7) {
+function appendRow(date, day, end, today) {
   var tr = document.createElement("tr");
   var tdSun = document.createElement("td");
   var tdMon = document.createElement("td");
@@ -116,6 +116,9 @@ function appendRow(date, day = 0, end = 7) {
 
   for (var i = day; i < end; i++) {
     tdList[i].innerHTML = date;
+    if (today === date) {
+      tdList[i].style.color = "red";
+    }
     date++;
   }
 
@@ -132,4 +135,4 @@ function appendRow(date, day = 0, end = 7) {
   return date;
 }
 
-calendar(todayYear, todayMonth);
+calendar(todayYear, todayMonth, todayDate);
