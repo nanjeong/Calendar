@@ -1,9 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: "Varela Round", sans-serif;
+  margin: 32px;
 }
 
 h1 {
   font-family: "Pacifico", cursive;
   text-align: center;
   font-size: 72px;
+  margin-bottom: 64px;
+}
+
+.today {
+  text-align: center;
+}
+
+#day,
+#date {
+  font-weight: 600;
+  font-size: 45px;
+}
+
+#day {
+  margin-bottom: 32px;
+}
+
+#date {
+  margin-bottom: 50px;
+}
+
+#month,
+#year {
+  font-size: 25px;
 }
