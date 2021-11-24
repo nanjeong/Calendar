@@ -7,6 +7,8 @@
 body {
   font-family: "Varela Round", sans-serif;
   margin: 32px;
+  display: flex;
+  justify-content: center;
 }
 
 h1 {
@@ -18,6 +20,7 @@ h1 {
 
 .today {
   text-align: center;
+  margin-bottom: 30px;
 }
 
 #day,
@@ -37,4 +40,10 @@ h1 {
 #month,
 #year {
   font-size: 25px;
+}
+
+th,
+td {
+  padding: 3px;
+  text-align: center;
 }
