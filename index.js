@@ -89,7 +89,10 @@ function calendar(year, month, today) {
   var day = dayOfTheWeek(year, month, 1);
   var date = 1;
   var daysOfTheMonth = daysOftheMonth(year, month + 1);
-  console.log(daysOfTheMonth);
+
+  if (todayYear !== year || todayMonth !== month) {
+    today = -1;
+  }
 
   while (date <= daysOfTheMonth) {
     if (date === 1) {
