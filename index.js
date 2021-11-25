@@ -164,3 +164,16 @@ function removeCalendar() {
     table.removeChild(tr[i]);
   }
 }
+
+let leftIcon = document.querySelector(".icon--left");
+
+leftIcon.addEventListener("click", function () {
+  moveMonth--;
+  if (moveMonth < 0) {
+    moveMonth = 11;
+    moveYear--;
+  }
+
+  removeCalendar();
+  calendar(moveYear, moveMonth, todayDate);
+});
