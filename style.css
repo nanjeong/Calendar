@@ -42,6 +42,17 @@ h1 {
   font-size: 25px;
 }
 
+.container {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
 th,
 td {
   padding: 3px;

@@ -105,6 +105,8 @@ function calendar(year, month, today) {
   }
 }
 
+let table = document.querySelector(".calendar");
+
 function appendRow(date, day, end, today) {
   var tr = document.createElement("tr");
   var tdSun = document.createElement("td");
@@ -125,7 +127,6 @@ function appendRow(date, day, end, today) {
     date++;
   }
 
-  var table = document.querySelector(".calendar");
   tr.appendChild(tdSun);
   tr.appendChild(tdMon);
   tr.appendChild(tdTue);
@@ -139,3 +140,27 @@ function appendRow(date, day, end, today) {
 }
 
 calendar(todayYear, todayMonth, todayDate);
+
+let moveMonth = todayMonth;
+let moveYear = todayYear;
+
+let rightIcon = document.querySelector(".icon--right");
+
+rightIcon.addEventListener("click", function () {
+  moveMonth++;
+  if (moveMonth === 12) {
+    moveMonth = 0;
+    moveYear++;
+  }
+
+  removeCalendar();
+  calendar(moveYear, moveMonth, todayDate);
+});
+
+function removeCalendar() {
+  var tr = document.querySelectorAll("tr");
+
+  for (var i = 1; i < tr.length; i++) {
+    table.removeChild(tr[i]);
+  }
+}
