@@ -21,15 +21,19 @@ const monthList = [
   "DEC",
 ];
 
-let day = document.querySelector("#day");
-let date = document.querySelector("#date");
-let month = document.querySelector("#month");
-let year = document.querySelector("#year");
+function setDate(setDay, setDate, setMonth, setYear) {
+  let day = document.querySelector("#day");
+  let date = document.querySelector("#date");
+  let month = document.querySelector("#month");
+  let year = document.querySelector("#year");
 
-day.textContent = dayList[todayDay];
-date.textContent = todayDate;
-month.textContent = monthList[todayMonth];
-year.textContent = todayYear;
+  day.textContent = dayList[setDay];
+  date.textContent = setDate;
+  month.textContent = monthList[setMonth];
+  year.textContent = setYear;
+}
+
+setDate(todayDay, todayDate, todayMonth, todayYear);
 
 function dayOfTheWeek(year, month, day) {
   let days = 0;
@@ -153,8 +157,7 @@ rightIcon.addEventListener("click", function () {
     moveYear++;
   }
 
-  removeCalendar();
-  calendar(moveYear, moveMonth, todayDate);
+  resetCalendar(moveYear, moveMonth);
 });
 
 function removeCalendar() {
@@ -174,6 +177,16 @@ leftIcon.addEventListener("click", function () {
     moveYear--;
   }
 
+  resetCalendar(moveYear, moveMonth);
+});
+
+function resetCalendar(moveYear, moveMonth) {
   removeCalendar();
   calendar(moveYear, moveMonth, todayDate);
-});
+
+  if (moveYear === todayYear && moveMonth === todayMonth) {
+    setDate(todayDay, todayDate, moveMonth, moveYear);
+  } else {
+    setDate(dayOfTheWeek(moveYear, moveMonth, 1), 1, moveMonth, moveYear);
+  }
+}
