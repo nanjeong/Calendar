@@ -100,18 +100,18 @@ function calendar(year, month, today) {
 
   while (date <= daysOfTheMonth) {
     if (date === 1) {
-      date = appendRow(date, day, 7, today);
+      date = appendRow(date, day, 7, today, year, month);
     } else if (daysOfTheMonth - date < 7) {
-      date = appendRow(date, 0, daysOfTheMonth - date + 1, today);
+      date = appendRow(date, 0, daysOfTheMonth - date + 1, today, year, month);
     } else {
-      date = appendRow(date, 0, 7, today);
+      date = appendRow(date, 0, 7, today, year, month);
     }
   }
 }
 
 let table = document.querySelector(".calendar");
 
-function appendRow(date, day, end, today) {
+function appendRow(date, day, end, today, year, month) {
   var tr = document.createElement("tr");
   var tdSun = document.createElement("td");
   var tdMon = document.createElement("td");
@@ -125,6 +125,8 @@ function appendRow(date, day, end, today) {
 
   for (var i = day; i < end; i++) {
     tdList[i].innerHTML = date;
+    tdList[i].addEventListener("click", changeDate(i, date, month, year));
+
     if (today === date) {
       tdList[i].style.color = "red";
     }
@@ -141,6 +143,12 @@ function appendRow(date, day, end, today) {
   table.appendChild(tr);
 
   return date;
+}
+
+function changeDate(day, date, month, year) {
+  return function () {
+    setDate(day, date, month, year);
+  };
 }
 
 calendar(todayYear, todayMonth, todayDate);
