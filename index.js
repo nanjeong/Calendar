@@ -69,73 +69,56 @@ function isLeapYear(year) {
   return false;
 }
 
-function calendar(year, month, today) {
+function calendar(year, month, today = -1) {
   var idxOfDay = indexOfDay(year, month, 1);
   var days = 1;
-  var totalDays = daysOftheMonth(year, month);
+  const totalDays = daysOftheMonth(year, month);
 
-  if (todayYear !== year || todayMonth !== month) {
-    today = -1;
+  if (todayYear === year && todayMonth === month) {
+    today = todayDate;
   }
+
+  showDate(idxOfDay, Math.abs(today), month, year);
+
+  let daysHTML = [
+    "<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>",
+  ];
 
   while (days <= totalDays) {
+    let start = 0;
+    let end = 7;
+
     if (days === 1) {
-      days = appendRow(days, idxOfDay, 7, today);
+      start = idxOfDay;
     } else if (totalDays - days < 7) {
-      days = appendRow(days, 0, totalDays - days + 1, today);
-    } else {
-      days = appendRow(days, 0, 7, today);
+      end = totalDays - days + 1;
     }
+
+    daysHTML.push(appendRow(days, start, end, today));
+
+    days += end - start;
   }
+
+  table.innerHTML = daysHTML.join("");
 }
 
 function appendRow(date, day, end, today) {
-  var tr = $create("tr");
-  var tdSun = $create("td");
-  var tdMon = $create("td");
-  var tdTue = $create("td");
-  var tdWed = $create("td");
-  var tdThu = $create("td");
-  var tdFri = $create("td");
-  var tdSat = $create("td");
+  let dayItem = [];
 
-  var tdList = [tdSun, tdMon, tdTue, tdWed, tdThu, tdFri, tdSat];
-
-  for (var i = day; i < end; i++) {
-    tdList[i].textContent = date;
-    if (today === date) {
-      tdList[i].style.color = "red";
+  for (let i = 0; i < end; i++) {
+    if (i < day) {
+      dayItem.push("<td></td>");
+    } else {
+      if (today === date) {
+        dayItem.push(`<td class="red">${date}</td>`);
+      } else {
+        dayItem.push(`<td>${date}</td>`);
+      }
+      date++;
     }
-    date++;
   }
 
-  showDate(todayDay, todayDate, todayMonth, todayYear);
-
-  for (let i = 0; i < 7; i++) {
-    tr.appendChild(tdList[i]);
-  }
-  table.appendChild(tr);
-
-  return date;
-}
-
-function removeCalendar() {
-  var tr = document.querySelectorAll("tr");
-
-  for (var i = 1; i < tr.length; i++) {
-    table.removeChild(tr[i]);
-  }
-}
-
-function resetCalendar(moveYear, moveMonth) {
-  removeCalendar();
-  calendar(moveYear, moveMonth, todayDate);
-
-  if (moveYear === todayYear && moveMonth === todayMonth) {
-    showDate(todayDay, todayDate, moveMonth, moveYear);
-  } else {
-    showDate(indexOfDay(moveYear, moveMonth, 1), 1, moveMonth, moveYear);
-  }
+  return "<tr>" + dayItem.join("") + "</tr>";
 }
 
 table.addEventListener("click", (e) => {
@@ -155,7 +138,7 @@ $(".icon--right").addEventListener("click", function () {
     moveYear++;
   }
 
-  resetCalendar(moveYear, moveMonth);
+  calendar(moveYear, moveMonth);
 });
 
 $(".icon--left").addEventListener("click", function () {
@@ -165,7 +148,7 @@ $(".icon--left").addEventListener("click", function () {
     moveYear--;
   }
 
-  resetCalendar(moveYear, moveMonth);
+  calendar(moveYear, moveMonth);
 });
 
 calendar(todayYear, todayMonth, todayDate);
