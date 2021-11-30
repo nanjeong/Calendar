@@ -70,19 +70,17 @@ function isLeapYear(year) {
 }
 
 function calendar(year, month, today = -1) {
-  var idxOfDay = indexOfDay(year, month, 1);
-  var days = 1;
-  const totalDays = daysOftheMonth(year, month);
-
   if (todayYear === year && todayMonth === month) {
     today = todayDate;
   }
 
-  showDate(idxOfDay, Math.abs(today), month, year);
-
   let daysHTML = [
     "<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>",
   ];
+
+  var idxOfDay = indexOfDay(year, month, 1);
+  var days = 1;
+  const totalDays = daysOftheMonth(year, month);
 
   while (days <= totalDays) {
     let start = 0;
@@ -100,22 +98,16 @@ function calendar(year, month, today = -1) {
   }
 
   table.innerHTML = daysHTML.join("");
+  showDate(idxOfDay, Math.abs(today), month, year);
 }
 
 function appendRow(date, day, end, today) {
   let dayItem = [];
 
   for (let i = 0; i < end; i++) {
-    if (i < day) {
-      dayItem.push("<td></td>");
-    } else {
-      if (today === date) {
-        dayItem.push(`<td class="red">${date}</td>`);
-      } else {
-        dayItem.push(`<td>${date}</td>`);
-      }
-      date++;
-    }
+    dayItem.push(
+      `<td ${today === date ? 'class="red"' : ""}>${i < day ? "" : date++}</td>`
+    );
   }
 
   return "<tr>" + dayItem.join("") + "</tr>";
