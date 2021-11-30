@@ -78,8 +78,8 @@ function calendar(year, month, today = -1) {
     "<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>",
   ];
 
-  var idxOfDay = indexOfDay(year, month, 1);
-  var days = 1;
+  const idxOfFirstDay = indexOfDay(year, month, 1);
+  let days = 1;
   const totalDays = daysOftheMonth(year, month);
 
   while (days <= totalDays) {
@@ -87,7 +87,7 @@ function calendar(year, month, today = -1) {
     let end = 7;
 
     if (days === 1) {
-      start = idxOfDay;
+      start = idxOfFirstDay;
     } else if (totalDays - days < 7) {
       end = totalDays - days + 1;
     }
@@ -98,6 +98,8 @@ function calendar(year, month, today = -1) {
   }
 
   table.innerHTML = daysHTML.join("");
+
+  const idxOfDay = indexOfDay(year, month, Math.abs(today));
   showDate(idxOfDay, Math.abs(today), month, year);
 }
 
