@@ -161,7 +161,17 @@ $(".icon--plus").addEventListener("click", function () {
 $(".schedule-list").addEventListener("dblclick", function (e) {
   if (e.target.classList.contains("schedule-item")) {
     let newSchedule = prompt("수정된 일정을 입력해주세요", e.target.innerText);
-    e.target.innerHTML = template(newSchedule);
+    if (newSchedule) {
+      e.target.innerHTML = template(newSchedule);
+    }
+  }
+});
+
+$(".schedule-list").addEventListener("click", function (e) {
+  if (e.target.classList.contains("icon--trash")) {
+    if (confirm("삭제하시겠습니까?")) {
+      e.target.closest("li").remove();
+    }
   }
 });
 

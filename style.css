@@ -98,7 +98,7 @@ td {
 }
 
 .schedule-item:hover .icon--trash {
-  display: block;
+  visibility: visible;
 }
 
 .schedule-item-checkbox {
@@ -112,7 +112,7 @@ td {
   color: #adb5bd;
   transition: all 0.2s;
 
-  display: none;
+  visibility: hidden;
 }
 
 .icon--trash:hover {
