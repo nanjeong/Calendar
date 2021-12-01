@@ -145,4 +145,12 @@ $(".icon--left").addEventListener("click", function () {
   calendar(moveYear, moveMonth);
 });
 
+$(".icon--plus").addEventListener("click", function () {
+  let schedule = prompt("일정을 입력해주세요", "예) 12일 친구 생일");
+  const template = `<li>${schedule}</li>`;
+  if (schedule) {
+    $(".schedule-list").insertAdjacentHTML("beforeend", template);
+  }
+});
+
 calendar(todayYear, todayMonth, todayDate);
