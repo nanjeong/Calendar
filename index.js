@@ -173,6 +173,16 @@ $(".schedule-list").addEventListener("click", function (e) {
       e.target.closest("li").remove();
     }
   }
+
+  if (e.target.classList.contains("schedule-item-checkbox")) {
+    if (e.target.checked) {
+      e.target.closest("li").style.textDecoration = "line-through";
+      e.target.closest("li").style.color = "#AAA";
+    } else {
+      e.target.closest("li").style.textDecoration = "none";
+      e.target.closest("li").style.color = "#333";
+    }
+  }
 });
 
 calendar(todayYear, todayMonth, todayDate);
