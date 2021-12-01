@@ -97,6 +97,10 @@ td {
   align-items: center;
 }
 
+.schedule-item:hover .icon--trash {
+  display: block;
+}
+
 .schedule-item-checkbox {
   margin-right: 10px;
 }
@@ -104,7 +108,7 @@ td {
 .icon--trash {
   width: 18px;
   height: 18px;
-  margin-left: auto;
+  margin-left: 25px;
   color: #adb5bd;
   transition: all 0.2s;
 
