@@ -64,9 +64,15 @@ td {
   color: red;
 }
 
+.schedule {
+  width: 300px;
+  margin: auto;
+}
+
 .schedule-head {
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 #schedule-title {
@@ -77,4 +83,34 @@ td {
 .icon--plus {
   margin-left: auto;
   color: #1098ad;
+}
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.schedule-item {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.schedule-item-checkbox {
+  margin-right: 10px;
+}
+
+.icon--trash {
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  color: #adb5bd;
+  transition: all 0.2s;
+
+  display: none;
+}
+
+.icon--trash:hover {
+  color: #f03e3e;
 }
