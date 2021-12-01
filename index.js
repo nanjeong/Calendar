@@ -145,13 +145,23 @@ $(".icon--left").addEventListener("click", function () {
   calendar(moveYear, moveMonth);
 });
 
-$(".icon--plus").addEventListener("click", function () {
-  let schedule = prompt("일정을 입력해주세요", "예) 12일 친구 생일");
-  const template = `<li class="schedule-item"><input class="schedule-item-checkbox" type="checkbox">${schedule}</input><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 icon icon--trash" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+const template = (schedule) => {
+  return `<li class="schedule-item"><input class="schedule-item-checkbox" type="checkbox">${schedule}</input><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 icon icon--trash" fill="none" viewBox="0 0 24 24" stroke="currentColor">
   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
 </svg></li>`;
+};
+
+$(".icon--plus").addEventListener("click", function () {
+  let schedule = prompt("일정을 입력해주세요", "예) 12일 친구 생일");
   if (schedule) {
-    $(".schedule-list").insertAdjacentHTML("beforeend", template);
+    $(".schedule-list").insertAdjacentHTML("beforeend", template(schedule));
+  }
+});
+
+$(".schedule-list").addEventListener("dblclick", function (e) {
+  if (e.target.classList.contains("schedule-item")) {
+    let newSchedule = prompt("수정된 일정을 입력해주세요", e.target.innerText);
+    e.target.innerHTML = template(newSchedule);
   }
 });
 
