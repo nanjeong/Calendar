@@ -168,7 +168,7 @@ $(".schedule-list").addEventListener("dblclick", function (e) {
 });
 
 $(".schedule-list").addEventListener("click", function (e) {
-  if (e.target.classList.contains("icon--trash")) {
+  if (e.target.classList.contains("icon--trash") || e.target.closest("svg")) {
     if (confirm("삭제하시겠습니까?")) {
       e.target.closest("li").remove();
     }
