@@ -41,6 +41,8 @@ function showDate(setDay, setDate, setMonth, setYear) {
   $("#date").textContent = setDate;
   $("#month").textContent = monthList[setMonth];
   $("#year").textContent = setYear;
+
+  $("#schedule-title").textContent = `${setYear}년 ${setMonth + 1}월 일정`;
 }
 
 function indexOfDay(year, month, date) {
@@ -110,6 +112,7 @@ function calendar(year, month, today = -1) {
 
   const idxOfDay = indexOfDay(year, month, Math.abs(today));
   showDate(idxOfDay, Math.abs(today), month, year);
+  render();
 }
 
 function appendRow(date, day, end, today) {
@@ -164,7 +167,7 @@ const template = (schedule, index, checked) => {
 </svg></li>`;
 };
 
-let scheduleList = [];
+let scheduleList = {};
 
 if (store.getLocalStorage()) {
   scheduleList = store.getLocalStorage();
@@ -172,32 +175,41 @@ if (store.getLocalStorage()) {
 }
 
 function render() {
-  $(".schedule-list").innerHTML = scheduleList
+  if (scheduleList[`${moveYear}${moveMonth}`] === undefined) {
+    $(".schedule-list").innerHTML = "";
+    return;
+  }
+
+  $(".schedule-list").innerHTML = scheduleList[`${moveYear}${moveMonth}`]
     .map((it, index) => template(it.schedule, index, it.checked))
     .join("");
 }
 
 function addSchedule(schedule) {
-  scheduleList.push({ schedule: schedule });
+  if (scheduleList[`${moveYear}${moveMonth}`] === undefined) {
+    scheduleList[`${moveYear}${moveMonth}`] = [];
+  }
+  scheduleList[`${moveYear}${moveMonth}`].push({ schedule: schedule });
   store.setLocalStorage(scheduleList);
 }
 
 function editSchedule(e) {
   let newSchedule = prompt("수정된 일정을 입력해주세요", e.target.innerText);
   let index = e.target.dataset.id;
-  scheduleList[index].schedule = newSchedule;
+  scheduleList[`${moveYear}${moveMonth}`][index].schedule = newSchedule;
   store.setLocalStorage(scheduleList);
 }
 
 function removeSchedule(e) {
   let index = e.target.dataset.id;
-  scheduleList.splice(index, 1);
+  scheduleList[`${moveYear}${moveMonth}`].splice(index, 1);
   store.setLocalStorage(scheduleList);
 }
 
 function checkSchedule(e) {
   let index = e.target.closest("li").dataset.id;
-  scheduleList[index].checked = !scheduleList[index].checked;
+  scheduleList[`${moveYear}${moveMonth}`][index].checked =
+    !scheduleList[`${moveYear}${moveMonth}`][index].checked;
   store.setLocalStorage(scheduleList);
 }
 
