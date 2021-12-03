@@ -9,12 +9,11 @@ body {
   margin: 32px;
   display: flex;
   justify-content: center;
+
+  color: #222;
 }
 
 h1 {
-  font-family: "Pacifico", cursive;
-  text-align: center;
-  font-size: 72px;
   margin-bottom: 64px;
 }
 
@@ -117,4 +116,9 @@ td {
 
 .icon--trash:hover {
   color: #f03e3e;
+}
+
+.checked {
+  text-decoration: line-through;
+  color: #aaa;
 }

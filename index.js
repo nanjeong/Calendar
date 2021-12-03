@@ -27,6 +27,15 @@ const $ = (selector) => document.querySelector(selector);
 const $create = (tagName) => document.createElement(tagName);
 const table = $(".calendar");
 
+const store = {
+  setLocalStorage(schedule) {
+    localStorage.setItem("schedule", JSON.stringify(schedule));
+  },
+  getLocalStorage() {
+    return JSON.parse(localStorage.getItem("schedule"));
+  },
+};
+
 function showDate(setDay, setDate, setMonth, setYear) {
   $("#day").textContent = dayList[setDay];
   $("#date").textContent = setDate;
@@ -145,42 +154,67 @@ $(".icon--left").addEventListener("click", function () {
   calendar(moveYear, moveMonth);
 });
 
-const template = (schedule) => {
-  return `<li class="schedule-item"><input class="schedule-item-checkbox" type="checkbox">${schedule}</input><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 icon icon--trash" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+const template = (schedule, index, checked) => {
+  return `<li data-id="${index}" class="schedule-item ${
+    checked ? "checked" : ""
+  }"><input class="schedule-item-checkbox" type="checkbox" ${
+    checked ? "checked" : ""
+  }>${schedule}</input><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 icon icon--trash" fill="none" viewBox="0 0 24 24" stroke="currentColor">
   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
 </svg></li>`;
 };
 
+let scheduleList = [];
+
+if (store.getLocalStorage()) {
+  scheduleList = store.getLocalStorage();
+  render();
+}
+
+function render() {
+  $(".schedule-list").innerHTML = scheduleList
+    .map((it, index) => template(it.schedule, index, it.checked))
+    .join("");
+}
+
 $(".icon--plus").addEventListener("click", function () {
   let schedule = prompt("일정을 입력해주세요", "예) 12일 친구 생일");
   if (schedule) {
-    $(".schedule-list").insertAdjacentHTML("beforeend", template(schedule));
+    scheduleList.push({ schedule: schedule });
+    store.setLocalStorage(scheduleList);
+    render();
   }
 });
 
 $(".schedule-list").addEventListener("dblclick", function (e) {
   if (e.target.classList.contains("schedule-item")) {
     let newSchedule = prompt("수정된 일정을 입력해주세요", e.target.innerText);
-    if (newSchedule) {
-      e.target.innerHTML = template(newSchedule);
-    }
+    let index = e.target.dataset.id;
+    scheduleList[index][schedule] = newSchedule;
+    store.setLocalStorage(scheduleList);
+    render();
   }
 });
 
 $(".schedule-list").addEventListener("click", function (e) {
   if (e.target.classList.contains("icon--trash") || e.target.closest("svg")) {
     if (confirm("삭제하시겠습니까?")) {
-      e.target.closest("li").remove();
+      let index = e.target.dataset.id;
+      scheduleList.splice(index, 1);
+      store.setLocalStorage(scheduleList);
+      render();
     }
   }
 
   if (e.target.classList.contains("schedule-item-checkbox")) {
     if (e.target.checked) {
-      e.target.closest("li").style.textDecoration = "line-through";
-      e.target.closest("li").style.color = "#AAA";
-    } else {
-      e.target.closest("li").style.textDecoration = "none";
-      e.target.closest("li").style.color = "#333";
+      let index = e.target.closest("li").dataset.id;
+      scheduleList[index].checked = !scheduleList[index].checked;
+      store.setLocalStorage(scheduleList);
+      render();
+      // scheduleList[index].checked = !scheduleList[index].checked;
+      // store.setLocalStorage(scheduleList);
+      // render();
     }
   }
 });
