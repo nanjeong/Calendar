@@ -177,21 +177,41 @@ function render() {
     .join("");
 }
 
+function addSchedule(schedule) {
+  scheduleList.push({ schedule: schedule });
+  store.setLocalStorage(scheduleList);
+}
+
+function editSchedule(e) {
+  let newSchedule = prompt("수정된 일정을 입력해주세요", e.target.innerText);
+  let index = e.target.dataset.id;
+  scheduleList[index].schedule = newSchedule;
+  store.setLocalStorage(scheduleList);
+}
+
+function removeSchedule(e) {
+  let index = e.target.dataset.id;
+  scheduleList.splice(index, 1);
+  store.setLocalStorage(scheduleList);
+}
+
+function checkSchedule(e) {
+  let index = e.target.closest("li").dataset.id;
+  scheduleList[index].checked = !scheduleList[index].checked;
+  store.setLocalStorage(scheduleList);
+}
+
 $(".icon--plus").addEventListener("click", function () {
   let schedule = prompt("일정을 입력해주세요", "예) 12일 친구 생일");
   if (schedule) {
-    scheduleList.push({ schedule: schedule });
-    store.setLocalStorage(scheduleList);
+    addSchedule(schedule);
     render();
   }
 });
 
 $(".schedule-list").addEventListener("dblclick", function (e) {
   if (e.target.classList.contains("schedule-item")) {
-    let newSchedule = prompt("수정된 일정을 입력해주세요", e.target.innerText);
-    let index = e.target.dataset.id;
-    scheduleList[index][schedule] = newSchedule;
-    store.setLocalStorage(scheduleList);
+    editSchedule(e);
     render();
   }
 });
@@ -199,23 +219,14 @@ $(".schedule-list").addEventListener("dblclick", function (e) {
 $(".schedule-list").addEventListener("click", function (e) {
   if (e.target.classList.contains("icon--trash") || e.target.closest("svg")) {
     if (confirm("삭제하시겠습니까?")) {
-      let index = e.target.dataset.id;
-      scheduleList.splice(index, 1);
-      store.setLocalStorage(scheduleList);
+      removeSchedule(e);
       render();
     }
   }
 
   if (e.target.classList.contains("schedule-item-checkbox")) {
-    if (e.target.checked) {
-      let index = e.target.closest("li").dataset.id;
-      scheduleList[index].checked = !scheduleList[index].checked;
-      store.setLocalStorage(scheduleList);
-      render();
-      // scheduleList[index].checked = !scheduleList[index].checked;
-      // store.setLocalStorage(scheduleList);
-      // render();
-    }
+    checkSchedule(e);
+    render();
   }
 });
 
